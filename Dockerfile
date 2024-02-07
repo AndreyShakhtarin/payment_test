@@ -3,7 +3,6 @@ FROM php:8.2-apache
 
 # Set working directory
 WORKDIR /var/www/html/public
-ENV APP_HOME /var/www/html
 
 # Copy composer files
 COPY composer.json composer.lock ./

@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
-#[Broadcast]
 class Product
 {
     #[ORM\Id]

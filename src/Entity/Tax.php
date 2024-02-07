@@ -24,6 +24,9 @@ class Tax
     #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: Purchase::class)]
     private Collection $purchases;
 
+    #[ORM\Column(length: 255)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->purchases = new ArrayCollection();
@@ -84,6 +87,18 @@ class Tax
                 $purchase->setCoupon(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
 
         return $this;
     }

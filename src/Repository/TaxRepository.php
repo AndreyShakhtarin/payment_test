@@ -21,28 +21,15 @@ class TaxRepository extends ServiceEntityRepository
         parent::__construct($registry, Tax::class);
     }
 
-//    /**
-//     * @return Tax[] Returns an array of Tax objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findOneByCode($value): ?Tax
+    {
+        $value = preg_replace('/[0-9]/','X', $value);
 
-//    public function findOneBySomeField($value): ?Tax
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.code = :code')
+            ->setParameter('code', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

@@ -13,6 +13,7 @@ class CouponFixtures extends Fixture
         $coupons = [
             ['title' => 'P10',  'type' => 'Percent', 'amount' => 10],
             ['title' => 'P100', 'type' => 'Percent', 'amount' => 100],
+            ['title' => 'P6', 'type' => 'Percent', 'amount' => 6],
             ['title' => 'F2', 'type' => 'Fixed',   'amount' => 2]
         ];
 

@@ -6,10 +6,9 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\RequestBody;
-use App\Controller\PurchaseController;
+use App\Dto\CalculatePriceRequest;
 use App\Repository\PurchaseRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
 #[ApiResource(
@@ -17,6 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             name: 'purchase',
             routeName: 'purchase',
+            outputFormats: ['json' => 'application/json'],
             openapi: new Operation(
                 summary: 'Purchase product',
                 requestBody: new RequestBody(
@@ -44,33 +44,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Post(
             name: 'calculate_price',
-            routeName: 'calculate_price',
-            openapi: new Operation(
-                summary: 'Purchase product',
-                requestBody: new RequestBody(
-                    content: new \ArrayObject([
-                        'application/json' => [
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'product' => ['type' => 'integer'],
-                                    'taxNumber' => ['type' => 'string'],
-                                    'couponCode' => ['type' => 'string'],
-                                ]
-                            ],
-                            'example' => [
-                                'product' => 1,
-                                'taxNumber' => 'DE123456789',
-                                'couponCode' => 'D15',
-                            ]
-                        ]
-                    ])
-                )
-            )
+            status: 200,
+            messenger: 'input',
+            input: CalculatePriceRequest::class,
+            uriTemplate: '/calculate-price',
+            outputFormats: ['json' => 'application/json'],
         ),
     ]
 )]
-class Purchase
+final class Purchase
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -4,6 +4,7 @@ namespace App\Validator;
 
 use App\Entity\Tax;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -25,6 +26,7 @@ class TaxNumberValidator extends ConstraintValidator
 
         $tax ?? $this->context->buildViolation($constraint->message)
             ->setParameter('{{ value }}', $value)
+            ->setCode(Response::HTTP_BAD_REQUEST)
             ->addViolation();
     }
 }

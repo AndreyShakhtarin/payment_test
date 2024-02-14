@@ -4,9 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\OpenApi\Model\Operation;
-use ApiPlatform\OpenApi\Model\RequestBody;
 use App\Dto\CalculatePriceRequest;
+use App\Dto\PurchaseRequest;
 use App\Repository\PurchaseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,32 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
     operations: [
         new Post(
             name: 'purchase',
-            routeName: 'purchase',
+            status: 200,
+            messenger: 'input',
+            input: PurchaseRequest::class,
+            uriTemplate: '/purchase',
             outputFormats: ['json' => 'application/json'],
-            openapi: new Operation(
-                summary: 'Purchase product',
-                requestBody: new RequestBody(
-                    content: new \ArrayObject([
-                        'application/json' => [
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'product' => ['type' => 'integer'],
-                                    'taxNumber' => ['type' => 'string'],
-                                    'couponCode' => ['type' => 'string'],
-                                    'paymentProcessor' => ['type' => 'string'],
-                                ]
-                            ],
-                            'example' => [
-                                'product' => 1,
-                                'taxNumber' => 'IT12345678900',
-                                'couponCode' => 'D15',
-                                'paymentProcessor' => 'paypal',
-                            ]
-                        ]
-                    ])
-                )
-            )
         ),
         new Post(
             name: 'calculate_price',

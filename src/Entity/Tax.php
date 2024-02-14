@@ -21,11 +21,11 @@ class Tax
     #[ORM\Column]
     private ?float $percent = null;
 
-    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: Purchase::class)]
-    private Collection $purchases;
-
     #[ORM\Column(length: 255)]
     private ?string $code = null;
+
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: Purchase::class)]
+    private Collection $purchases;
 
     public function __construct()
     {
@@ -61,6 +61,30 @@ class Tax
         return $this;
     }
 
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    public function getPurchase(): ?Purchase
+    {
+        return $this->purchase;
+    }
+
+    public function setPurchase(?Purchase $purchase): static
+    {
+        $this->purchase = $purchase;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Purchase>
      */
@@ -73,7 +97,7 @@ class Tax
     {
         if (!$this->purchases->contains($purchase)) {
             $this->purchases->add($purchase);
-            $purchase->setCoupon($this);
+            $purchase->setTax($this);
         }
 
         return $this;
@@ -83,22 +107,10 @@ class Tax
     {
         if ($this->purchases->removeElement($purchase)) {
             // set the owning side to null (unless already changed)
-            if ($purchase->getCoupon() === $this) {
-                $purchase->setCoupon(null);
+            if ($purchase->getTax() === $this) {
+                $purchase->setTax(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): static
-    {
-        $this->code = $code;
 
         return $this;
     }

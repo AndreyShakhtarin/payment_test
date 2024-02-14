@@ -33,7 +33,7 @@ class PaymentCalculation
         $productRepository = $this->em->getRepository(Product::class);
         $product = $productRepository->find($id);
 
-        return $product->getPrice();
+        return $product?->getPrice() ?? 0;
     }
 
     /**
@@ -44,10 +44,9 @@ class PaymentCalculation
      */
     private function getTaxPercent($taxNumber)
     {
-        $taxRepository = $this->em->getRepository(Tax::class);
-        $tax = $taxRepository->findOneByCode($taxNumber);
+        $tax = $this->em->getRepository(Tax::class)->findOneByCode($taxNumber);
 
-        return $tax->getPercent();
+        return $tax?->getPercent() ?? 0;
     }
 
     /**
@@ -69,9 +68,9 @@ class PaymentCalculation
         $taxPercent = $this->getTaxPercent($taxNumber);
         $coupon = $this->getCoupon($couponCode);
 
-        $couponAmount = $coupon->getAmount();
+        $couponAmount = $coupon?->getAmount() ?? 0;
         $totalPriceWithTax = $productPrice + (($productPrice/100) * $taxPercent);
 
-        return $coupon->getType() == Coupon::PERCENT ? $totalPriceWithTax - ($totalPriceWithTax/100) * $couponAmount : $totalPriceWithTax - $couponAmount;
+        return $coupon?->getType() ?? null == Coupon::PERCENT ? $totalPriceWithTax - ($totalPriceWithTax/100) * $couponAmount : $totalPriceWithTax - $couponAmount;
     }
 }

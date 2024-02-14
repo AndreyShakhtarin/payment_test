@@ -19,8 +19,7 @@ class ProductValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        $productRepository = $this->em->getRepository(Product::class);
-        $product = $productRepository->find($value);
+        $product = $this->em->getRepository(Product::class)->find($value);
 
         $product ?? $this->context->buildViolation($constraint->message)
             ->setParameter('{{ value }}', $value)

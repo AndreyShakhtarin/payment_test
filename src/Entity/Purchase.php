@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\Post;
 use App\Dto\CalculatePriceRequest;
 use App\Dto\PurchaseRequest;
 use App\Repository\PurchaseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
@@ -42,7 +44,10 @@ final class Purchase
     private ?Product $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'purchases')]
-    private ?Tax $coupon = null;
+    private ?Tax $tax = null;
+
+    #[ORM\ManyToOne(inversedBy: 'purchases')]
+    private ?Coupon $coupon = null;
 
     public function getId(): ?int
     {
@@ -61,12 +66,24 @@ final class Purchase
         return $this;
     }
 
-    public function getCoupon(): ?Tax
+    public function getTax(): ?Tax
+    {
+        return $this->tax;
+    }
+
+    public function setTax(?Tax $tax): static
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    public function getCoupon(): ?Coupon
     {
         return $this->coupon;
     }
 
-    public function setCoupon(?Tax $coupon): static
+    public function setCoupon(?Coupon $coupon): static
     {
         $this->coupon = $coupon;
 

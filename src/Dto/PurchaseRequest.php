@@ -24,7 +24,7 @@ class PurchaseRequest
     public string $couponCode;
 
     #[Assert\NotBlank]
-    #[Payment]
     #[Assert\Choice(options: ['paypal', 'stripe'], message: 'The value you selected is not a valid choice. Select one choice: paypal or stripe')]
+    #[Payment]
     public string $paymentProcessor;
 }
